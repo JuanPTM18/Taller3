@@ -16,12 +16,14 @@ class Gestionar():
         
         self.txtusuario1=Entry(self.ventana)
         self.txtusuario1.place(x=150, y=50)
+        Tooltip(self.txtusuario1, "Ingrese su usuario en este campo")
 
         self.lblNombre=tk.Label(self.ventana,text="Nombre*")
         self.lblNombre.place(x=50, y=80)
 
         self.txtNombre=Entry(self.ventana)
         self.txtNombre.place(x=150, y=80)
+        Tooltip(self.txtNombre, "Ingrese su nombre completo, solo letras desde la [A-Z]")
 
 
         self.lblApellido=tk.Label(self.ventana,text="apellido*")
@@ -29,6 +31,8 @@ class Gestionar():
 
         self.txtapellido=Entry(self.ventana)
         self.txtapellido.place(x=150, y=110)
+        Tooltip(self.txtapellido, "Ingrese su apellido completo, solo letras desde la [A-Z]")
+
 
 
         self.lbltelefono=tk.Label(self.ventana,text="Telefono*")
@@ -36,6 +40,8 @@ class Gestionar():
 
         self.txtTelefono=Entry(self.ventana)
         self.txtTelefono.place(x=150, y=140)
+        Tooltip(self.txtTelefono, "digita en este campo su numero telefonico, solo numeros ")
+
 
 
         self.lblEmail=tk.Label(self.ventana,text="Email*")
@@ -43,18 +49,21 @@ class Gestionar():
 
         self.txtEmail=Entry(self.ventana)
         self.txtEmail.place(x=150, y=170)
+        Tooltip(self.txtEmail, "Ingrese su correo electronico en este campo")
 
 
         self.btnguardar=Button(self.ventana,text="guardar")
         self.btnguardar.place(x=50, y=220)
+        Tooltip(self.btnguardar, "pulsa este boton para guardar")
 
 
         self.btnlimpiar=Button(self.ventana,text="limpiar")
         self.btnlimpiar.place(x=120, y=220)
-
+        Tooltip(self.btnlimpiar, "boton para limpiar todos los campos")
 
         self.btnsalir=Button(self.ventana,text="salir")
         self.btnsalir.place(x=250, y=220)
+        Tooltip(self.btnsalir, "pulsa para salir")
 
     def eliminarCliente(self):
         self.ventana=tk.Toplevel()
