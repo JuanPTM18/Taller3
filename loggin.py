@@ -3,7 +3,6 @@ from tkinter import*
 from tkinter import messagebox
 from Registro import*
 from Menu import*
-from icons import*
 from Tooltip import*
 
 
@@ -18,6 +17,7 @@ class loggin(Menu,Registro):
     def ocultarCaracteres(self,event):
         self.txtPasword.configure(show="*")
         self.btnVer.configure(text="ver")
+        
     def validarLongitud(self,event):
         longitud=len(self.txtPasword.get())#el get trae el texto que tiene la caja 
         if longitud >=8:
@@ -53,20 +53,26 @@ class loggin(Menu,Registro):
         self.btnVer.bind("<Enter>",self.verCaracteres)#escucha ver caracteres
         self.btnVer.bind("<Leave>",self.ocultarCaracteres)
 
-        self.btnIngresar=tk.Button(self.ventana,text="ingresar",command=self.crearVentanaM,width=20,state="disabled")#pa que el usuario no pueda dar clic 
+        iconoIngresar=tk.PhotoImage(file=r"icons\user_go.png")
+        self.btnIngresar=tk.Button(self.ventana,text="ingresar", image=iconoIngresar, compound=LEFT,command=self.crearVentanaM,width=60,state="disabled")#pa que el usuario no pueda dar clic 
         self.btnIngresar.grid(row=3,column=1)
+        Tooltip(self.btnIngresar,"Presione para ingresar")
 
-        self.btnRegistro=tk.Button(self.ventana,text="Registrase",command=self.Registrarse)
+        iconoRegistrar = tk.PhotoImage(file= r"icons\user_add.png")
+        self.btnRegistro=tk.Button(self.ventana,text="Registrase", image=iconoRegistrar, compound=LEFT,command=self.Registrarse)
         self.btnRegistro.grid(row=4,column=1)
+        Tooltip(self.btnRegistro,"Presione para registrar un nuevo usuario")
 
-        self.btnLimpiar=tk.Button(self.ventana,text="limpiar") 
+        iconoLimpiar=tk.PhotoImage(file=r"icons\textfield_delete.png")
+        self.btnLimpiar=tk.Button(self.ventana, text="Limpiar", image=iconoLimpiar, compound=LEFT) 
         self.btnLimpiar.grid(row=3,column=2)
+        Tooltip(self.btnLimpiar, "Presione para borrar los campos")
 
         iconoAyuda=tk.PhotoImage(file=r"icons\help.png")
         self.btnAyuda=tk.Button(self.ventana,image=iconoAyuda)
         self.btnAyuda.place(relx=1,x=-40,rely=0.1,width=25,height=25)
 
-        Tooltip(self.btnAyuda,"presione para obtener ayuda!\nALT+a")
+        Tooltip(self.btnAyuda,"Presione para obtener ayuda!\nALT+a")
         self.btnAyuda.bind('<Button-1>',self.mostrarAyuda)
 
         self.ventana.bind('<Alt-a>',self.mostrarAyuda)
