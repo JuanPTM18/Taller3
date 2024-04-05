@@ -3,10 +3,11 @@ import tkinter as tk
 from Tooltip import*
 from gestionarCliente import*
 from icons import*
-from Registro import*
+from modificarCliente import*
+from eliminarCliente import*
 
 
-class Menu(Gestionar):
+class Menu(Gestionar,Eliminar,modificar):
 
    
     def crearVentanaM(self):
@@ -22,7 +23,7 @@ class Menu(Gestionar):
 
         self.gestionarCliente.add_command(label="crear cliente ",command=self.crearCliente)
         self.gestionarCliente.add_command(label="eliminar cliente",command=self.eliminarCliente)
-        self.gestionarCliente.add_command(label="modificar cliente",command=self.ModificarCliente)
+        self.gestionarCliente.add_command(label="modificar cliente",command=self.modificarCliente)
 
         self.gestionarCuenta = tk.Menu(self.menu,tearoff=0)
 

@@ -4,171 +4,104 @@ from Tooltip import*
 from tkinter import messagebox
 from icons import *
 
+
 class Gestionar():
+    def confirmar(self, event):
+        opcion = messagebox.askyesnocancel("Confirmar", "Está seguro que quiere salir de la Ventana?")
+        if(opcion == True):
+            self.ventana.destroy()  
+        else:
+            pass  
+
+    def limpiar(self, event):
+        self.txtNombre.delete(0, END) # Borra el contenido del campo de entrada de nombre
+        self.txtApellido.delete(0, END)
+        self.txtCedula.delete(0, END)  # Borra el contenido del campo de entrada de cédula
+        self.txtEmail.delete(0, END)   # Borra el contenido del campo de entrada de email
+        self.txtTelefono.delete(0, END)  # Borra el contenido del campo de entrada de contraseña
+        self.txtNombre.focus_set()
+
+    def validarCedula(self, event):
+        caracter = event.keysym  # Obtiene el carácter introducido
+        if(caracter.isdigit()):  # Verifica si el carácter es un dígito - (caracter.isdigit() Valida números)
+            self.txtCedula.config(bg="#FFFFFF")  # Cambia el color de fondo del campo de cédula a blanco
+        else:
+            if(event.keysym != "BackSpace"):  # Verifica si la tecla pulsada no es retroceso
+                self.txtCedula.delete(len(self.txtCedula.get())-1, END)  # Borra el último carácter introducido
+    def validarNombre(self, event):
+        caracter = event.keysym  # Obtiene el carácter introducido
+        if(caracter.isalpha()):  # Verifica si el carácter es una letra - (caracter.isalpha() Valida letras - caracter.isalnum() Valida letras y números)
+            self.txtNombre.config(bg="#FFFFFF")  # Cambia el color de fondo del campo de nombre a blanco
+        else:
+            if(event.keysym != "BackSpace"):  # Verifica si la tecla pulsada no es retroceso
+                self.txtNombre.delete(len(self.txtNombre.get())-1, END)  # Borra el último caracter
+
 
 
     def crearCliente(self):
-        self.ventana=tk.Toplevel()
-        self.ventana.geometry("300x300")
+       
+        self.ventana = tk.Toplevel()
+        self.ventana.geometry("400x400")
+        self.menu = tk.Menu(self.ventana)
+        self.ventana.resizable(0,0)
+
+        iconoAyuda = tk.PhotoImage(file="icons/help.png")
+        self.btnAyuda = tk.Button(self.ventana, image=iconoAyuda)
+        self.btnAyuda.place(relx=0.9, rely=0.1, width=25, height=25)
+        Tooltip(self.btnAyuda, "Presione para obtener ayuda!\nAlt+A")
+        self.btnAyuda.bind('<Button-1>', self.mostrarAyuda)
+        
+        self.ventana.bind('<Alt-a>', self.mostrarAyuda)
 
         self.lblTitulo=tk.Label(self.ventana,text="Crear Cliente")
-        self.lblTitulo.place(relx=0.5,rely=0.1,anchor="center")
-        self.lblusuario1=tk.Label(self.ventana,text="Usuario* ")
-        self.lblusuario1.place(x=50, y=50)
-        
-        self.txtusuario1=Entry(self.ventana)
-        self.txtusuario1.place(x=150, y=50)
-        Tooltip(self.txtusuario1, "digita nombre de usuario completo, mínimo 8 caracteres.")
+        self.lblTitulo.place(relx=0.5, rely=0.1, anchor= "center")
 
-        self.lblNombre=tk.Label(self.ventana,text="Nombre*")
-        self.lblNombre.place(x=50, y=80)
+        self.lblCedula = tk.Label(self.ventana, text="Cedula*")
+        self.lblCedula.place(relx=0.1, rely=0.2)
+        self.txtCedula = Entry(self.ventana)
+        self.txtCedula.place(relx=0.3, rely=0.2)
+        Tooltip(self.txtCedula, "Ingrese su numero de Cedula sin espacios")
+        self.txtCedula.bind('<KeyRelease>', self.validarCedula)
 
-        self.txtNombre=Entry(self.ventana)
-        self.txtNombre.place(x=150, y=80)
-        Tooltip(self.txtNombre, "Ingrese su nombre completo, mínimo 8 caracteres.\nSolo letras [a-z]")
-        
+        self.lblNombre = tk.Label(self.ventana, text="Nombre*")
+        self.lblNombre.place(relx=0.1, rely=0.3)
+        self.txtNombre = Entry(self.ventana)
+        self.txtNombre.place(relx=0.3, rely=0.3)
+        Tooltip(self.txtNombre, "Ingrese su Nombre")
+        self.txtNombre.bind('<KeyRelease>', self.validarNombre)
 
-        self.lblApellido=tk.Label(self.ventana,text="apellido*")
-        self.lblApellido.place(x=50, y=110)
+        self.lblApellido = tk.Label(self.ventana, text="Apellido*")
+        self.lblApellido.place(relx=0.1, rely=0.4)
+        self.txtApellido = Entry(self.ventana)
+        self.txtApellido.place(relx=0.3, rely=0.4)
+        Tooltip(self.txtApellido, "Ingrese su Apellido")
+        self.txtApellido.bind('<KeyRelease>', self.validarNombre)
 
-        self.txtapellido=Entry(self.ventana)
-        self.txtapellido.place(x=150, y=110)
-        Tooltip(self.txtapellido, "Ingrese su apellido completo, mínimo 8 caracteres.\nSolo letras [a-z]")
+        self.lblTelefono = tk.Label(self.ventana, text="Teléfono*")
+        self.lblTelefono.place(relx=0.1, rely=0.5)
+        self.txtTelefono = Entry(self.ventana)
+        self.txtTelefono.place(relx=0.3, rely=0.5)
+        Tooltip(self.txtTelefono, "Ingrese su numero de Teléfono")
 
+        self.lblEmail = tk.Label(self.ventana, text="Email*")
+        self.lblEmail.place(relx=0.1, rely=0.6)
+        self.txtEmail = Entry(self.ventana)
+        self.txtEmail.place(relx=0.3, rely=0.6)
+        Tooltip(self.txtEmail, "Ingrese su Correo Electronico")
 
-        self.lbltelefono=tk.Label(self.ventana,text="Telefono*")
-        self.lbltelefono.place(x=50, y=140)
+        iconoAdd= tk.PhotoImage(file="icons/add.png")
+        self.btnguardar = Button(self.ventana,text="Guardar", image= iconoAdd,compound=LEFT, width=50)
+        self.btnguardar.place(relx=0.2, rely=0.7)
 
-        self.txtTelefono=Entry(self.ventana)
-        self.txtTelefono.place(x=150, y=140)
-        Tooltip(self.txtTelefono, "Ingrese su telefono en este campo ")
+        iconoLimpiar = tk.PhotoImage(file= r"icons/textfield_delete.png")
+        self.btnlimpiar = Button(self.ventana, text= "Limpiar", image=iconoLimpiar, compound=LEFT)
+        self.btnlimpiar.place(relx=0.5, rely=0.7)
+        self.btnlimpiar.bind('<Button-1>', self.limpiar)
+        Tooltip(self.btnlimpiar, "Borra todos los campos")
 
-
-        self.lblEmail=tk.Label(self.ventana,text="Email*")
-        self.lblEmail.place(x=50, y=170)
-
-        self.txtEmail=Entry(self.ventana)
-        self.txtEmail.place(x=150, y=170)
-        Tooltip(self.txtEmail, "Ingrese su correo en este campo")
-
-
-        iconoGuardar=tk.PhotoImage(file=r"icons\user_add.png")
-        self.btnguardar=Button(self.ventana,text="guardar", image=iconoGuardar, compound=LEFT)
-        self.btnguardar.place(x=50, y=220)
-        Tooltip(self.btnguardar, "presiona para guardar al cliente")
-
-        iconoLimpiar=tk.PhotoImage(file=r"icons\textfield_delete.png")
-        self.btnLimpiar=tk.Button(self.ventana, text="Limpiar", image=iconoLimpiar, compound=LEFT)
-        self.btnLimpiar.place(x=120, y=220)
-        Tooltip(self.btnLimpiar, "presiona para borrar todos los campos ")
-
-        iconoSalir=tk.PhotoImage(file=r"icons\cancel.png")
-        self.btnsalir=tk.Button(self.ventana,text="salir", image=iconoSalir, compound=LEFT)
-        self.btnsalir.place(x=250, y=220)
-        Tooltip(self.btnsalir, "pulsa para salir ")
-
-    def eliminarCliente(self):
-        self.ventana=tk.Toplevel()
-        self.ventana.geometry("300x300")
-        self.lbltitulo=tk.Label(self.ventana,text="Eliminar  Cliente")
-        self.lbltitulo.place(relx=0.5,rely=0.1,anchor="center")
-
-        self.lblcedula=tk.Label(self.ventana,text="Cedula*")
-        self.lblcedula.place(relx=0.1,rely=0.2)
-        self.txtcedula=Entry(self.ventana)
-        self.txtcedula.place(relx=0.3,rely=0.2,width=150)
-        Tooltip(self.txtcedula, "Ingrese la cedula de quien se quiere eliminar.")
-
-        self.lblnombre=tk.Label(self.ventana,text="Nombres*")
-        self.lblnombre.place(relx=0.1,rely=0.3)
-        self.txtnombre=Entry(self.ventana,state="disabled")
-        self.txtnombre.place(relx=0.3,rely=0.3,width=150)
-
-        self.lblapellido=tk.Label(self.ventana,text="Apellidos")
-        self.lblapellido.place(relx=0.1,rely=0.4)
-        self.txtapellido=Entry(self.ventana,state="disabled")
-        self.txtapellido.place(relx=0.3,rely=0.4,width=150)
-
-        self.lbltelefono=tk.Label(self.ventana,text="Telefono*")
-        self.lbltelefono.place(relx=0.1,rely=0.5)
-        self.txttelefono=Entry(self.ventana,state="disabled")
-        self.txttelefono.place(relx=0.3,rely=0.5,width=150)
-
-        self.lblemail=tk.Label(self.ventana,text="Email*")
-        self.lblemail.place(relx=0.1,rely=0.6)
-        self.txtemail=Entry(self.ventana,state="disabled")
-        self.txtemail.place(relx=0.3,rely=0.6,width=150)
-
-
-        iconoBuscar=tk.PhotoImage(file=r"icons\application_form_magnify.png")
-        self.btnBuscar=tk.Button(self.ventana,text="Buscar", image=iconoBuscar, compound=LEFT)
-        self.btnBuscar.place(relx=0.8,rely=0.2)
-        Tooltip(self.btnBuscar, "presiona para buscar")
-
-        iconoLimpiar=tk.PhotoImage(file=r"icons\textfield_delete.png")
-        self.btnLimpiar=tk.Button(self.ventana, text="Limpiar", image=iconoLimpiar, compound=LEFT) 
-        self.btnLimpiar.place(relx=0.4, rely=0.8)
-        Tooltip(self.btnLimpiar, "presiona para borrar todos los campos ")
-
-        iconoSalir=tk.PhotoImage(file=r"icons\cancel.png")
-        self.btnsalir=tk.Button(self.ventana,text="salir", image=iconoSalir, compound=LEFT)
-        self.btnsalir.place(relx=0.7, rely=0.8)
-        Tooltip(self.btnsalir, "pulsa para salir ")
-
-        iconoEliminar=PhotoImage(file=r"icons\user_delete.png")
-        self.btnEliminar=tk.Button(self.ventana,text="Eliminar", image=iconoEliminar, compound=LEFT)
-        self.btnEliminar.place(relx=0.1,rely=0.8)
-        Tooltip(self.btnEliminar, "presiona para eliminar el cliente seleccionado")
-
-
-    def ModificarCliente(self):
-        self.ventana=tk.Toplevel()
-        self.ventana.geometry("300x300")
-        self.lbltitulo=tk.Label(self.ventana,text="Modificar Cliente")
-        self.lbltitulo.place(relx=0.5,rely=0.1,anchor="center")
-
-        self.lblcedula=tk.Label(self.ventana,text="Cedula*")
-        self.lblcedula.place(relx=0.1,rely=0.2)
-        self.txtcedula=Entry(self.ventana)
-        self.txtcedula.place(relx=0.3,rely=0.2,width=150)
-        Tooltip(self.txtcedula, "Ingrese la cedula del cliente a modificar.")
-
-
-        self.lblnombre=tk.Label(self.ventana,text="Nombres*")
-        self.lblnombre.place(relx=0.1,rely=0.3)
-        self.txtnombre=Entry(self.ventana,state="disabled")
-        self.txtnombre.place(relx=0.3,rely=0.3,width=150)
-        
-
-        self.lblapellido=tk.Label(self.ventana,text="Apellidos")
-        self.lblapellido.place(relx=0.1,rely=0.4)
-        self.txtapellido=Entry(self.ventana,state="disabled")
-        self.txtapellido.place(relx=0.3,rely=0.4,width=150)
-
-        self.lbltelefono=tk.Label(self.ventana,text="Telefono*")
-        self.lbltelefono.place(relx=0.1,rely=0.5)
-        self.txttelefono=Entry(self.ventana,state="disabled")
-        self.txttelefono.place(relx=0.3,rely=0.5,width=150)
-
-        self.lblemail=tk.Label(self.ventana,text="Email*")
-        self.lblemail.place(relx=0.1,rely=0.6)
-        self.txtemail=Entry(self.ventana,state="disabled")
-        self.txtemail.place(relx=0.3,rely=0.6,width=150)
-
-        self.btnBuscar=tk.Button(self.ventana,text="Buscar")
-        self.btnBuscar.place(relx=0.8,rely=0.2)
-        Tooltip(self.btnBuscar, "pulsa para buscar el cliente que se desea modificar ")
-
-        self.btnLimpiar=tk.Button(self.ventana,text="Limpiar")
-        self.btnLimpiar.place(relx=0.3,rely=0.8)
-        Tooltip(self.btnLimpiar, "presiona para borrar todos los campos ")
-
-        self.btnSalir=tk.Button(self.ventana,text="Salir")
-        self.btnSalir.place(relx=0.7,rely=0.8)
-        Tooltip(self.btnSalir, "pulsa para salir")
-
-        self.btnModificar=tk.Button(self.ventana,text="Modificar")
-        self.btnModificar.place(relx=0.1,rely=0.8)
-        Tooltip(self.btnModificar, "presione para modificar el cliente")
+        iconosalir = tk.PhotoImage(file= r"icons/cancel.png")
+        self.btnsalir = tk.Button(self.ventana, text="Salir", image=iconosalir, compound=LEFT)
+        self.btnsalir.place(relx=0.8, rely=0.7)
+        self.btnsalir.bind('<Button-1>', self.confirmar)
 
         self.ventana.mainloop()
